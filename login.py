@@ -17,7 +17,7 @@ def start_main_application():
 
 def perform_login():
     try:
-        with open("C:/Users/iamel/Downloads/PROYECTOS/app tienda/files/base_de_usuarios_empleados.json", "r", encoding="utf-8") as archivo_base_empleados:
+        with open("files/base_de_usuarios_empleados.json", "r", encoding="utf-8") as archivo_base_empleados:
             base_datos_empleados = json.load(archivo_base_empleados)
             username = username_entry.get()
             password = password_entry.get()
@@ -38,7 +38,7 @@ def perform_login():
 
 def policies_sec():
     try:
-        with open("C:/Users/iamel/Downloads/PROYECTOS/app tienda/files/politicas_seguridad.txt", "r", encoding="utf-8") as archivo_politicas:
+        with open("files/politicas_seguridad.txt", "r", encoding="utf-8") as archivo_politicas:
             messagebox.showwarning("Política de Seguridad para el Acceso al Sistema",
                                    archivo_politicas.read())
     except Exception:
