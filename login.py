@@ -3,15 +3,10 @@ from email import message
 from tkinter import ttk, messagebox
 from customtkinter import *
 import os
-
-# Diccionario que guarda los usuarios
-accounts = {
-    "username": "hector salamanca",
-    "password": "1234"
-}
-
+import json
 
 # Funciones
+
 
 def start_main_application():
     import app
@@ -21,29 +16,36 @@ def start_main_application():
 
 
 def perform_login():
-    username = username_entry.get()
-    password = password_entry.get()
+    try:
+        with open("C:/Users/iamel/Downloads/PROYECTOS/app tienda/files/base_de_usuarios_empleados.json", "r", encoding="utf-8") as archivo_base_empleados:
+            base_datos_empleados = json.load(archivo_base_empleados)
+            username = username_entry.get()
+            password = password_entry.get()
 
-    if username == '' or password == '':
-        messagebox.showinfo("", "No puedes ingresar un datos vacíos")
-    elif username == accounts["username"] and password == accounts["password"]:
-        messagebox.showinfo("", "Iniciando Sesión... ")
-        window.destroy()
-        start_main_application()
-    else:
+        if not username or not password:
+            messagebox.showinfo("", "No puedes ingresar un datos vacíos")
+
+        for empleado in base_datos_empleados["usuarios_empleados"]:
+            if empleado["username"] == username and empleado["password"] == password:
+                messagebox.showinfo("", "Iniciando Sesión... ")
+                window.destroy()
+                start_main_application()
+                return
+    except Exception:
         messagebox.showinfo(
             "", "Usuario o Contraseña Invalidos, Intente de nuevo")
 
 
 def policies_sec():
     try:
-        with open("politicas_seguridad.txt", "r", encoding="utf-8") as archivo_politicas:
+        with open("C:/Users/iamel/Downloads/PROYECTOS/app tienda/files/politicas_seguridad.txt", "r", encoding="utf-8") as archivo_politicas:
             messagebox.showwarning("Política de Seguridad para el Acceso al Sistema",
                                    archivo_politicas.read())
     except Exception:
         messagebox.showwarning("Error", "Error al leer el archivo")
 
-        # Configuración de Pantalla
+
+# Configuración de Pantalla
 window = CTk()
 window.geometry("900x600")
 window.title("Login UI")
