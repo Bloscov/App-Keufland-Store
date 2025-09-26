@@ -1,0 +1,13 @@
+El uso del usuario y PIN asignados a cada empleado es personal e intransferible. Estos datos son la llave de acceso al sistema y deben ser tratados con la máxima responsabilidad. Cualquier uso indebido puede comprometer la seguridad de la información de la tienda y será motivo de sanciones.
+
+Reglamentos:
+
+1.- El usuario y PIN no deben compartirse con nadie, bajo ninguna circunstancia.
+
+2.- Se prohíbe escribir o almacenar el PIN en lugares visibles o accesibles.
+
+3.- Es obligatorio cambiar el PIN periódicamente según indicaciones del sistema.
+
+4.- En caso de sospecha de uso no autorizado, el empleado debe notificar de inmediato al administrador.
+
+5.- El acceso al sistema debe realizarse únicamente desde los dispositivos autorizados por la tienda.
