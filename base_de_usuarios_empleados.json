@@ -1,7 +1,0 @@
-{
-    "usuarios_empleados":[
-        {"username": "hector salamanca", "password": "1234"},
-        {"username": "ivan", "password": "1234"},
-        {"username": "empleado1", "password": "1234"}
-    ]
-}
