@@ -1,7 +1,9 @@
+from email import message
 import tkinter as tk
 from tkinter import ttk, messagebox
 from datetime import datetime
 import json
+import time
 
 
 class ProductDatabase:
@@ -38,6 +40,7 @@ class POSSystem:
         self.db = ProductDatabase()
         self.cart = []
         self.total = 0.0
+        self.root.after(60000, self.tiempo_inactividad)
 
         self.setup_ui()
 
@@ -86,6 +89,10 @@ class POSSystem:
                                bg="#ff0000", fg="white", font=("Arial", 10, "bold"))
         delete_btn.grid(row=0, column=5, padx=10, pady=10)
 
+        # Botón promociones
+        promos_btn = tk.Button(
+            input_frame, text="Ver Promociones", command=self.show_promos, bg="#f1c232", fg="white", font=("Arial", 10, "bold"))
+        promos_btn.grid(row=0, column=6, padx=10, pady=10)
         # Frame para la lista de productos
         list_frame = tk.Frame(main_frame, bg="#ffffff", relief=tk.RAISED, bd=2)
         list_frame.pack(fill=tk.BOTH, expand=True, pady=5)
@@ -143,6 +150,12 @@ class POSSystem:
 
         # Focus en el campo de entrada
         self.product_entry.focus_set()
+
+    def tiempo_inactividad(self):
+        if messagebox.askyesno("Tiempo Ausente", "¿Deseas continuar comprando?"):
+            pass
+        else:
+            self.root.destroy()
 
     def scan_product(self, event=None):
         code = self.product_code_var.get().strip()
@@ -208,6 +221,14 @@ class POSSystem:
                 f"${item['price']:.2f}",
                 f"${item['subtotal']:.2f}"
             ))
+
+    def show_promos(self, event=None):
+        try:
+            with open("files/promos.txt", "r", encoding="utf-8") as archivo_promos:
+                messagebox.showinfo("Promociones semanales",
+                                    archivo_promos.read())
+        except FileNotFoundError:
+            messagebox.showerror("Error", "Promociones no encontradas")
 
     def calculate_total(self):
         self.total = sum(item["subtotal"] for item in self.cart)
