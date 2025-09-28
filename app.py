@@ -191,7 +191,7 @@ class POSSystem:
             "subtotal": subtotal
         })
 
-        if code == "006" or "009":
+        if code == "006" or code == "009":
             messagebox.showerror(
                 "Restrincción Edad", "Recuerda no venderle alcohol o tabaco a menores de 18")
 
