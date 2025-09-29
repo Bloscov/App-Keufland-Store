@@ -40,6 +40,9 @@ class POSSystem:
         self.db = ProductDatabase()
         self.cart = []
         self.total = 0.0
+        # Variables para acumular ventas
+        self.total_increment = 0.0
+        self.sales_count = 0
         self.root.after(60000, self.tiempo_inactividad)
 
         self.setup_ui()
@@ -78,7 +81,7 @@ class POSSystem:
                                   font=("Arial", 12), width=5)
         quantity_entry.grid(row=0, column=3, padx=10, pady=10)
 
-        # Botón agregar
+        # Botón Agregar
         add_btn = tk.Button(input_frame, text="Agregar", command=self.scan_product,
                             bg="#4CAF50", fg="white", font=("Arial", 10, "bold"),
                             relief=tk.RAISED, bd=2)
@@ -118,6 +121,7 @@ class POSSystem:
         # Frame inferior para totales y botones
         bottom_frame = tk.Frame(main_frame, bg="#f0f0f0")
         bottom_frame.pack(fill=tk.X, pady=5)
+        """Se usa pack en vez de grid para no tener que batallar con la ubicación de los botones"""
 
         # Total
         total_frame = tk.Frame(
@@ -128,7 +132,7 @@ class POSSystem:
                                     font=("Arial", 18, "bold"), bg="#ffffff", fg="#000000")
         self.total_label.pack(pady=15)
 
-        # Botones de acción
+        # Tipo frame para botones de acción
         buttons_frame = tk.Frame(bottom_frame, bg="#f0f0f0")
         buttons_frame.pack(fill=tk.X, pady=5)
 
@@ -147,7 +151,10 @@ class POSSystem:
                             bg="#4CAF50", fg="white", font=("Arial", 10, "bold"),
                             relief=tk.RAISED, bd=2, width=13)
         pay_btn.pack(side=tk.RIGHT, padx=5)
-
+        # Botón para generar el Reporte
+        report_btn = tk.Button(
+            buttons_frame, text="Generar Reporte", command=self.save_sales_to_txt, bg="#f1c232", fg="white", font=("Arial", 10, "bold"))
+        report_btn.pack(side=tk.LEFT, padx=5)
         # Focus en el campo de entrada
         self.product_entry.focus_set()
 
@@ -156,6 +163,14 @@ class POSSystem:
             pass
         else:
             self.root.destroy()
+
+    def save_sales_to_txt(self):
+        """Esto hace que se cree un archivo .txt dentro de la carpetas de archivos y a la de reporte de las ventas y se guarde con la fecha"""
+        fecha = datetime.now().strftime("%Y-%m-%d")
+        filename = f"files/reportes-ventas/reporte-ventas-{fecha}.txt"
+        with open(filename, "a", encoding="utf-8") as f:
+            f.write(
+                f"Fecha: {fecha} | Ventas: {self.sales_count} | Ingresos totales: ${self.total_increment:.2f}\n")
 
     def scan_product(self, event=None):
         code = self.product_code_var.get().strip()
@@ -221,6 +236,15 @@ class POSSystem:
                 f"${item['price']:.2f}",
                 f"${item['subtotal']:.2f}"
             ))
+
+    def save_total(self):
+        """Guarda los totales acumulados"""
+        datos_total = {
+            "ventas": self.sales_count,
+            "total": self.total_increment
+        }
+        with open("files/totales.json", "w") as archivo_cargado_total:
+            json.dump(datos_total, archivo_cargado_total)
 
     def show_promos(self, event=None):
         try:
@@ -297,6 +321,10 @@ class POSSystem:
         if not self.cart:
             messagebox.showwarning("Advertencia", "El carrito está vacío")
             return
+
+        # Trabajo de variables
+        self.sales_count += 1
+        self.total_increment += self.total
 
         # Ventana de pago
         payment_window = tk.Toplevel(self.root)
