@@ -1,14 +1,15 @@
+import time
+import json
+from datetime import datetime
+from tkinter import ttk, messagebox
 from email import message
 import tkinter as tk
-from tkinter import ttk, messagebox
-from datetime import datetime
-import json
-import time
+import customtkinter as ctk
 
 
 class ProductDatabase:
     def __init__(self):
-        # base de datos productos simulada
+        # base de datos productos
         self.products = {
             "001": {"name": "Coca Cola 355ml", "price": 15.50, "stock": 50},
             "002": {"name": "Sabritas Original", "price": 18.00, "stock": 30},
@@ -37,12 +38,15 @@ class POSSystem:
         self.root.title("Punto de Venta")
         self.root.geometry("900x600")
         self.root.configure(bg="#f0f0f0")
+
         self.db = ProductDatabase()
         self.cart = []
         self.total = 0.0
+
         # Variables para acumular ventas
         self.total_increment = 0.0
         self.sales_count = 0
+        # Tiempo inactivo
         self.root.after(60000, self.tiempo_inactividad)
 
         self.setup_ui()
@@ -96,6 +100,7 @@ class POSSystem:
         promos_btn = tk.Button(
             input_frame, text="Ver Promociones", command=self.show_promos, bg="#f1c232", fg="white", font=("Arial", 10, "bold"))
         promos_btn.grid(row=0, column=6, padx=10, pady=10)
+
         # Frame para la lista de productos
         list_frame = tk.Frame(main_frame, bg="#ffffff", relief=tk.RAISED, bd=2)
         list_frame.pack(fill=tk.BOTH, expand=True, pady=5)
@@ -243,8 +248,6 @@ class POSSystem:
             "ventas": self.sales_count,
             "total": self.total_increment
         }
-        with open("files/totales.json", "w") as archivo_cargado_total:
-            json.dump(datos_total, archivo_cargado_total)
 
     def show_promos(self, event=None):
         try:
@@ -395,7 +398,9 @@ class POSSystem:
                   bg="#f44336", fg="white", font=("Arial", 10, "bold")).pack(side=tk.LEFT, padx=5)
 
 
+# Esta linea corre el programa en si, verifica que esten lo de la app y lo corre.
 if __name__ == "__main__":
     root = tk.Tk()
     app = POSSystem(root)
+    """El mainloop siempre tiene que estar al ultimo, para que cargue todo lo que esta arriba de el y no quede nada fuera"""
     root.mainloop()
