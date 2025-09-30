@@ -39,8 +39,8 @@ def perform_login():
 def policies_sec():
     try:
         with open("files/politicas_seguridad.txt", "r", encoding="utf-8") as archivo_politicas:
-            messagebox.showwarning("Política de Seguridad para el Acceso al Sistema",
-                                   archivo_politicas.read())
+            messagebox.showinfo("Política de Seguridad para el Acceso al Sistema",
+                                archivo_politicas.read())
     except Exception:
         messagebox.showwarning("Error", "Error al leer el archivo")
 
