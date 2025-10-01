@@ -36,7 +36,7 @@ class POSSystem:
     def __init__(self, root):
         self.root = root
         self.root.title("Punto de Venta")
-        self.root.geometry("900x600")
+        self.root.geometry("900x900")
         self.root.configure(bg="#f0f0f0")
 
         self.db = ProductDatabase()
