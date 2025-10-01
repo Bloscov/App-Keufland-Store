@@ -201,7 +201,7 @@ class POSSystem:
                 "Error", f"Stock insuficiente. Disponible: {product['stock']}")
             return
 
-        # Agregar al carrito
+         # Agregar al carrito
         subtotal = product["price"] * quantity
         self.cart.append({
             "code": code,
@@ -215,13 +215,11 @@ class POSSystem:
             messagebox.showerror(
                 "Restrincción Edad", "Recuerda no venderle alcohol o tabaco a menores de 18")
 
-        # Actualizar stock
-        self.db.update_stock(code, quantity)
-
         # Actualizar interfaz
         self.update_cart_display()
         self.calculate_total()
-
+        # Actualizar stock
+        self.db.update_stock(code, quantity)
         # Limpiar campos
         self.product_code_var.set("")
         self.quantity_var.set("1")
@@ -242,6 +240,19 @@ class POSSystem:
                 f"${item['subtotal']:.2f}"
             ))
 
+    """Esta función es una implementación simple para aplicar promociones dentro de la app"""
+
+    def use_promos_offer(self):
+        for item in self.cart:
+            if item["code"] == "001" and item["quantity"] == 2:
+                self.total = self.total - 6
+            if item["code"] == "002" and item["quantity"] == 3:
+                self.total = self.total - 18
+            if item["code"] == "004" and item["quantity"] == 2:
+                self.total = self.total - 7
+            if item["code"] == "009" and item["quantity"] == 6:
+                self.total = self.total - 20
+
     def save_total(self):
         """Guarda los totales acumulados"""
         datos_total = {
@@ -259,6 +270,7 @@ class POSSystem:
 
     def calculate_total(self):
         self.total = sum(item["subtotal"] for item in self.cart)
+        self.use_promos_offer()
         self.total_label.config(text=f"TOTAL: ${self.total:.2f}")
 
     def delete_item(self):
