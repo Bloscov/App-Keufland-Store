@@ -20,4 +20,8 @@ El Sistema main se verá así.
 
 ![Image](https://github.com/user-attachments/assets/a2426ac8-b158-4761-b9f5-f0f48ddaeecc)
 
-Modifica o usa los usuarios ya ingresados dentro de files/base_de_usuarios_empleados.json
+Modifica o usa los usuarios ya ingresados dentro de files/base_de_usuarios_empleados.json para la pagina de login, para poder ingresar al usuario
+
+## Colaboraciones
+
+Si tienes una función o algo adicional para aportar al sistema, con todo gusto lo recibiremos.
